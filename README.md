@@ -1,7 +1,7 @@
-# DataStructJS
+# DataStructTS
 
-Exercício de criação das estruturas de dados estudadas utilizando a linguagem JavaScript.
+Exercício de implementação das estruturas de dados estudadas utilizando a linguagem TypeScript.
 
--   [ ] Pilha
+-   [x] Pilha
 -   [ ] Fila
 -   [ ] Lista encadeada
