@@ -27,45 +27,23 @@ Deno.test(function stackPopThrows() {
     assertThrows(() => stack.pop(), EvalError, "Stack is empty");
 });
 
-Deno.test(function multipleTypesStack() {
+[0, "0", false, {}].forEach((item) => {
+    Deno.test(`${typeof item}Stack`, () => {
+        const stack = new MyStack<typeof item>();
+        stack.push(item);
+        assertEquals(stack.pop(), item);
+    });
+});
+
+Deno.test(`multipleTypesStack`, () => {
     const stack = new MyStack();
-    assertEquals(stack.isEmpty(), true);
-    stack.push(0);
-    stack.push("0");
-    stack.push(false);
-    stack.push([]);
-    stack.push({});
-    assertEquals(stack.isEmpty(), false);
-    assertEquals(stack.pop(), {});
-    assertEquals(stack.pop(), []);
-    assertEquals(stack.pop(), false);
-    assertEquals(stack.pop(), "0");
-    assertEquals(stack.pop(), 0);
-    assertEquals(stack.isEmpty(), true);
-});
-
-Deno.test(function numberStack() {
-    const stack = new MyStack<number>();
-    assertEquals(stack.isEmpty(), true);
-    stack.push(0);
-    stack.push(1);
-    stack.push(2);
-    assertEquals(stack.isEmpty(), false);
-    assertEquals(stack.pop(), 2);
-    assertEquals(stack.pop(), 1);
-    assertEquals(stack.pop(), 0);
-    assertEquals(stack.isEmpty(), true);
-});
-
-Deno.test(function stringStack() {
-    const stack = new MyStack<string>();
-    assertEquals(stack.isEmpty(), true);
-    stack.push("0");
-    stack.push("1");
-    stack.push("2");
-    assertEquals(stack.isEmpty(), false);
-    assertEquals(stack.pop(), "2");
-    assertEquals(stack.pop(), "1");
-    assertEquals(stack.pop(), "0");
-    assertEquals(stack.isEmpty(), true);
+    const items = [0, "0", false, {}];
+    items.forEach((item) => {
+        stack.push(item);
+    });
+    let i = items.length - 1;
+    while (!stack.isEmpty()) {
+        assertEquals(stack.pop(), items[i]);
+        i--;
+    }
 });
