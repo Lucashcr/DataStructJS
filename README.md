@@ -3,5 +3,5 @@
 Exercício de implementação das estruturas de dados estudadas utilizando a linguagem TypeScript.
 
 -   [x] Pilha
--   [ ] Fila
+-   [x] Fila
 -   [ ] Lista encadeada
