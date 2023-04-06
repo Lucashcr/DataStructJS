@@ -32,7 +32,7 @@ class MyLinkedList<T> {
     }
 
     isEmpty(): boolean {
-        return this.length === 0 && !this.head && !this.tail;
+        return this.length === 0;
     }
 
     get length(): number {
@@ -100,22 +100,34 @@ class MyLinkedList<T> {
         }
     }
 
-    remove(index?: number) {
+    remove(index?: number): T | undefined {
         if (index === undefined) {
             index = this.length - 1;
         }
 
         this.checkbounds(index);
-        const previous = this.goThrough(index - 1);
 
-        const value = previous?.getNext()?.data;
-        if (previous?.getNext() === this.tail) {
-            this.tail = previous;
-            this.tail?.setNext(undefined);
+        let value;
+        if (index === 0) {
+            value = this.head?.data;
+            this.head = this.head?.getNext();
         } else {
-            previous?.setNext(previous.getNext()?.getNext());
+            const previous = this.goThrough(index - 1);
+            value = previous?.getNext()?.data;
+            if (previous?.getNext() === this.tail) {
+                this.tail = previous;
+                this.tail?.setNext(undefined);
+            } else {
+                previous?.setNext(previous.getNext()?.getNext());
+            }
         }
+
         this._length--;
+        if (this.isEmpty()) {
+            this.head = undefined;
+            this.tail = undefined;
+        }
+
         return value;
     }
 

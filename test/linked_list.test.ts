@@ -81,3 +81,26 @@ Deno.test(function getValueAtIndex() {
 
     assertEquals(list.asArray, [0, 1, 2]);
 });
+
+[0, "0", false, {}].forEach((item) => {
+    Deno.test(`${typeof item}List`, () => {
+        const list = new MyLinkedList<typeof item>();
+        list.append(item);
+        const removed = list.remove();
+
+        assertEquals(removed, item);
+    });
+});
+
+Deno.test(`multipleTypesList`, () => {
+    const list = new MyLinkedList();
+    const items = [0, "0", false, {}];
+    items.forEach((item) => {
+        list.append(item);
+    });
+    let i = items.length - 1;
+    while (!list.isEmpty()) {
+        assertEquals(list.remove(), items[i]);
+        i--;
+    }
+});
