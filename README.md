@@ -5,3 +5,4 @@ Exercício de implementação das estruturas de dados estudadas utilizando a lin
 -   [x] Pilha
 -   [x] Fila
 -   [x] Lista encadeada
+-   [x] Árvore binária
