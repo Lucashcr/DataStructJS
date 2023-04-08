@@ -10,7 +10,7 @@ class Node {
     }
 
     setNext(next: Node) {
-        if (next.data <= this._data) {
+        if (next._data <= this._data) {
             if (this.left) {
                 this.left.setNext(next);
                 return;
@@ -29,12 +29,30 @@ class Node {
         }
     }
 
+    getData(): number {
+        return this._data;
+    }
+
     getLeft(): Node | undefined {
-        return this.left;
+        if (!this.left) {
+            return undefined;
+        }
+        return new Node(
+            this.left.getData(),
+            this.left.getLeft(),
+            this.left.getRight()
+        );
     }
 
     getRight(): Node | undefined {
-        return this.right;
+        if (!this.right) {
+            return undefined;
+        }
+        return new Node(
+            this.right.getData(),
+            this.right.getLeft(),
+            this.right.getRight()
+        );
     }
 
     prefixedGoThrough(level = 0) {
@@ -66,13 +84,9 @@ class Node {
         }
         console.log("  ".repeat(level) + "|__" + this._data.toFixed(2));
     }
-
-    get data(): number {
-        return this._data;
-    }
 }
 
-class BinTree {
+export default class BinTree {
     private _root: Node | undefined;
     private countElements = 0;
 
@@ -80,8 +94,19 @@ class BinTree {
         this._root = root ? new Node(root) : undefined;
     }
 
-    get root() {
-        return { ...this._root };
+    getRoot(): Node | undefined {
+        if (!this._root) {
+            return undefined;
+        }
+        return new Node(
+            this._root.getData(),
+            this._root.getLeft(),
+            this._root.getRight()
+        );
+    }
+
+    isEmpty(): boolean {
+        return this.countElements === 0 && !this._root;
     }
 
     getCountElements() {
@@ -100,37 +125,43 @@ class BinTree {
         return;
     }
 
+    contains(data: number): boolean {
+        if (this.isEmpty()) {
+            return false;
+        }
+
+        let current = this._root;
+        while (current) {
+            if (current.getData() === data) {
+                return true;
+            } else if (current.getData() > data) {
+                current = current.getLeft();
+            } else {
+                current = current.getRight();
+            }
+        }
+
+        return false;
+    }
+
     prefixedGoThrough() {
-        if (!this._root) {
+        if (this.isEmpty()) {
             throw new EvalError("Tree is empty");
         }
-        this._root.prefixedGoThrough(0);
+        this._root?.prefixedGoThrough(0);
     }
 
     infixedGoThrough() {
-        if (!this._root) {
+        if (this.isEmpty()) {
             throw new EvalError("Tree is empty");
         }
-        this._root.infixedGoThrough(0);
+        this._root?.infixedGoThrough(0);
     }
 
     posfixedGoThrough() {
-        if (!this._root) {
+        if (this.isEmpty()) {
             throw new EvalError("Tree is empty");
         }
-        this._root.posfixedGoThrough(0);
+        this._root?.posfixedGoThrough(0);
     }
 }
-
-const binTree = new BinTree();
-for (let i = 0; i < 10; i++) {
-    binTree.add(Math.random() * 10);
-}
-console.log("Prefixed go through:");
-binTree.prefixedGoThrough();
-
-console.log("Infixed go through:");
-binTree.infixedGoThrough();
-
-console.log("Posfixed go through:");
-binTree.posfixedGoThrough();
